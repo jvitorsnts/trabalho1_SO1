@@ -1,2 +1,34 @@
-/read_file.exe
+# CClion
 .idea
+
+# Build
+bin
+obj
+build
+**/*.tar.gz
+
+# Executables
+*.exe
+*.app
+*.out
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
