@@ -1,3 +1,8 @@
+#ifndef READ_FILE_H
+#define READ_FILE_H
+
+#endif //READ_FILE_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -17,14 +22,35 @@ public:
 	}
 
 	friend ostream &operator<<(ostream& os, const ProcessParams& p) {
-		os << "Creation time = " << p.creation_time <<
-		" duration = " << p.duration <<
-		" period = " << p.period <<
-		" deadline = " << p.deadline <<
-		" priority = " << p.priority <<
-		endl;
+		os <<
+			"Creation time = " << p.creation_time <<
+				" duration = " << p.duration <<
+					" period = " << p.period <<
+						" deadline = " << p.deadline <<
+							" priority = " << p.priority <<	endl;
 		return os;
 	}
+
+	int getCreationTime() const {
+		return creation_time;
+	}
+
+	int getDuration() const {
+		return duration;
+	}
+
+	int getPeriod() const {
+		return period;
+	}
+
+	int getDeadline() const {
+		return deadline;
+	}
+
+	int getPriority() const {
+		return priority;
+	}
+
 	
 private:	
 	int creation_time;
@@ -46,7 +72,7 @@ public:
 	}
 	
 	void read_file() {
-		// cada processo tem 5 parametros:
+		// cada processo tem 5 atributos:
 		// a: data de criacao
 		// b: duracao
 		// c: periodo
@@ -59,7 +85,7 @@ public:
 		}
 		
 		while (myfile >> a >> b >> c >> d >> e) {
-			ProcessParams *p = new ProcessParams(a, b, c, d, e);
+			auto *p = new ProcessParams(a, b, c, d, e);
 			processes.push_back(p);
 		}
 
@@ -67,19 +93,22 @@ public:
 	}
 
 	void print_processes_params() {
-		vector<ProcessParams *>::iterator iter = processes.begin();
+		auto iter = processes.begin();
 
-		for(iter; iter < processes.end(); iter++) {
+		for(; iter < processes.end(); iter++) {
 			ProcessParams *p = *iter;
 			cout << *p;
 		}
 	}
 
 	~File() {
-		for(int i = 0; i < processes.size() ; i++) {
-			ProcessParams *p = processes[i];
-			delete p;
+		for(auto p : processes) {
+				delete p;
 		}
+	}
+
+	vector<ProcessParams *> get_processes() {
+		return processes;
 	}
 
 private:
@@ -87,12 +116,12 @@ private:
 	vector<ProcessParams *> processes;
 };
 
-int main()
-{
-	File f;
-	f.read_file();
-	f.print_processes_params();
-	// we read the file and print the processes parameters
-	return 0;
-}
+// main movido para main.cpp
+// int main()
+// {
+// 	File f;
+// 	f.read_file();
+// 	f.print_processes_params();
+// 	// return 0;
+// }
 
