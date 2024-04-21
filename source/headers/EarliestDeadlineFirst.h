@@ -17,9 +17,6 @@ public:
     EarliestDeadlineFirst(vector<Process *> processes);
 
 private:
-
-    // Compara deadlines entre processos
-    static bool compareByDeadline(const Process& p1, const Process& p2);
     
     // Escalona próximo processo
     void scheduleNextProcess() override;
