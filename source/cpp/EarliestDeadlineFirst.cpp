@@ -15,7 +15,7 @@ void EarliestDeadlineFirst::runScheduler() {
     verifyProcessesToCreate();
         
     while (processes.size() != processesStats.size()) {
-        // cout << processes.size() << processesStats.size() << endl;
+        // cout << "TESTES  " << processes.size() << "  " << processesStats.size() << "  " << readyProcesses.size() << endl;
         if (readyProcesses.empty()) {
             printTimeline();
             time++;
@@ -45,11 +45,11 @@ void EarliestDeadlineFirst::verifyProcessesToCreate() {
                 int iter = 0;
                 for (auto readyProcess : readyProcesses) {
                     if (process->getPriority() > readyProcess->getPriority()) {
-                        readyProcesses.insert(readyProcesses.begin()+iter, process);
                         break;
                     }
                     iter++;
                 }
+                readyProcesses.insert(readyProcesses.begin()+iter, process);
             }
         }
     }
@@ -110,6 +110,10 @@ void EarliestDeadlineFirst::printProcessesStats() {
 void EarliestDeadlineFirst::scheduleNextProcess() {
     Process *nextProcessIt = nullptr;
     for (auto readyProcess : readyProcesses) {
+        //cout << "readyProcess   " << readyProcess->getRelativeDeadline() << "   " << endl;
+        //if(nextProcessIt != nullptr){
+        //   cout << "nextProcessIt   "<< nextProcessIt->getRelativeDeadline() << endl;
+        //}
         if (nextProcessIt == nullptr || readyProcess->getRelativeDeadline() < nextProcessIt->getRelativeDeadline()) {
             nextProcessIt = readyProcess;
         }

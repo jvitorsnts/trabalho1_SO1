@@ -43,11 +43,11 @@ void RM::verifyProcessesToCreate() {
                 int iter = 0;
                 for (auto readyProcess : readyProcesses) {
                     if (process->getPriority() > readyProcess->getPriority()) {
-                        readyProcesses.insert(readyProcesses.begin()+iter, process);
                         break;
                     }
                     iter++;
                 }
+                readyProcesses.insert(readyProcesses.begin()+iter, process);
             }
         }
     }
