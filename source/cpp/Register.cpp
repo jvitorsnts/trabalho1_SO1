@@ -1,7 +1,3 @@
-
-//
-// Created by joao 19/04/24.
-//
 #include <array>
 #include "../headers/Register.h"
 

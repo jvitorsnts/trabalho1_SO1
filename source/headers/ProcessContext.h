@@ -1,7 +1,3 @@
-//
-// Created by joao on 18/04/2024
-//
-
 #ifndef PROCESS_CONTEXT_H
 #define PROCESS_CONTEXT_H
 

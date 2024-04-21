@@ -1,8 +1,3 @@
-
-//
-// Created by joao on 18/04/2024
-//
-
 #ifndef REGISTER_H
 #define REGISTER_H
 

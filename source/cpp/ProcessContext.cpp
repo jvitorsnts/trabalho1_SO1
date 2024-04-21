@@ -1,8 +1,3 @@
-
-//
-// Created by joao on 19/04/24.
-//
-
 #include "../headers/ProcessContext.h"
 
 using namespace std;

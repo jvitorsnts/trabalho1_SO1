@@ -22,6 +22,7 @@ int main() {
 
     vector<Process *> processes;
 
+    // Cria os processos
     int i = 1;
     for (auto &p: f.get_processes()) {
         auto *newProcess = new Process(i,
@@ -35,6 +36,7 @@ int main() {
         i++;
     }
 
+    // Escolhe entre os algoritmos de escalonamento
     Scheduler *scheduler;
     while (true) {
         cout << "Digite sua escolha: ";

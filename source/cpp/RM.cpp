@@ -8,6 +8,10 @@
 
 using namespace std;
 
+RM::RM(vector<Process *> processes) {
+        this->processes = move(processes);
+    }
+
 void RM::scheduleNextProcess() {
     if (currentProcess == nullptr) {
         currentProcess = readyProcesses.front();

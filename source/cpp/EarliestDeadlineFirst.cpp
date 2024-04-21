@@ -13,10 +13,6 @@ EarliestDeadlineFirst::EarliestDeadlineFirst(vector<Process *> processes) {
 void EarliestDeadlineFirst::scheduleNextProcess() {
     Process *nextProcessIt = nullptr;
     for (auto readyProcess : readyProcesses) {
-        //cout << "readyProcess   " << readyProcess->getRelativeDeadline() << "   " << endl;
-        //if(nextProcessIt != nullptr){
-        //   cout << "nextProcessIt   "<< nextProcessIt->getRelativeDeadline() << endl;
-        //}
         if (nextProcessIt == nullptr || readyProcess->getRelativeDeadline() < nextProcessIt->getRelativeDeadline()) {
             nextProcessIt = readyProcess;
         }

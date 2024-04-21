@@ -1,7 +1,3 @@
-//
-// Created by gabri on 13/04/2024.
-//
-
 #include "../headers/Process.h"
 #include <iostream>
 
@@ -102,10 +98,6 @@ void Process::preempt() {
 
 void Process::finish() {
     state = FINISHED;
-}
-
-bool Process::isRunning() const {
-    return state == PROCESS_STATE::RUNNING;
 }
 
 bool Process::isFinished() const {

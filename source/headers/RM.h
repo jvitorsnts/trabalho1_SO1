@@ -1,7 +1,3 @@
-//
-// Created by joao on 13/04/2024.
-//
-
 #ifndef RM_H
 #define RM_H
 
@@ -9,18 +5,15 @@
 #include "Process.h"
 #include "Scheduler.h"
 
-using namespace std;
-
 class RM : public Scheduler {
 public:
-
-    explicit RM(vector<Process *> processes) {
-        this->processes = move(processes);
-    }
-
+    
+    // Construtor
+    RM(vector<Process *> processes);
 
 private:
-
+    
+    // Escalona próximo processo
     void scheduleNextProcess() override;
     
 };

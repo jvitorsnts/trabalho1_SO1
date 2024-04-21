@@ -1,7 +1,3 @@
-//
-// Created by joao on 13/04/2024.
-//
-
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
@@ -18,6 +14,7 @@ using namespace std;
 class Scheduler {
 public:
     
+    // Destrutor
     virtual ~Scheduler() {
         for (auto &processes: processes) {
             delete processes;
@@ -25,14 +22,26 @@ public:
     }
 
 protected:
-
+    
+    // Verifica se tem processos para criar, cria e adiciona no vector de prontos
     void verifyProcessesToCreate();
 
+    // Printa o cabeçalho do diagrama de tempo
     void printTimelineHeader();
+
+    // Printa o diagrama de tempo do estado atual de cada processo
     void printTimeline();
+
+    // printa os stats de cada processo(id, turnarroundtime, tempo médio de espera, deadlines perdidos)
     void printProcessesStats();
+
+    // Escalona próximo processo
     virtual void scheduleNextProcess() = 0;
+
+    // Verifica quais processos tem que ser finalizados
     void verifyProcessesToFinalize();
+
+    // Finaliza os procesos e atualiza aqueles com mais instancias
     void finalizeProcesses();
     
     int time = 0;
