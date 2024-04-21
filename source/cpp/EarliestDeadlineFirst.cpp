@@ -30,7 +30,7 @@ void EarliestDeadlineFirst::scheduleOneTimeUnit() {
 
     nextProcessIt->run();
 
-    for (const auto& process : processes) {
+    for (auto& process : processes) {
         if (&process == &(*nextProcessIt)) {
             std::cout << " ##";
         } else if (process.getStartTime() <= currentTime && !process.isFinished()) {
