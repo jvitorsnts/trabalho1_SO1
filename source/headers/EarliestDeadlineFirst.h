@@ -8,9 +8,6 @@
 #include "Scheduler.h"
 
 class EarliestDeadlineFirst : public Scheduler {
-private:
-    int currentTime;
-
 public:
 
     // Construtor
