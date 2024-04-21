@@ -18,18 +18,11 @@ public:
         this->processes = move(processes);
     }
 
-    void runScheduler() override;
 
 private:
 
-    vector<Process *> readyProcesses = vector<Process *>();
-    void printTimelineHeader() override;
-    void printTimeline() override;
-    void printProcessesStats() override;
-    void verifyProcessesToCreate() override;
-    void scheduleNextProcess();
-    void verifyProcessesToFinalize();
-    void finalizeProcesses();
+    void scheduleNextProcess() override;
+    
 };
 
 #endif //RM_H

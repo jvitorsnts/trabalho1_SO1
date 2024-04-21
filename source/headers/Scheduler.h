@@ -26,55 +26,14 @@ public:
 
 protected:
 
-    virtual void verifyProcessesToCreate() = 0;
+    void verifyProcessesToCreate();
 
-    virtual void printTimelineHeader() {
-        cout << "tempo\t";
-        for (const auto &process: processes) {
-            cout << "P" << process->getId() << "\t";
-        }
-        cout << endl;
-    }
-
-    virtual void printTimeline() {
-        cout << setw(2) << time << "-" << setw(2) << time + 1 << "\t";
-        for (const auto &process: processes) {
-            if (process->getState() == Process::PROCESS_STATE::RUNNING) {
-                cout << "##\t";
-            } else if (process->getState() == Process::PROCESS_STATE::READY) {
-                cout << "--\t";
-            } else {
-                cout << "  \t";
-            }
-        }
-        cout << std::endl;
-    }
-
-    virtual void printProcessesStats() {
-        sort(processesStats.begin(), processesStats.end(),
-                  [](const Process::ProcessStats &a, const Process::ProcessStats &b) -> bool {
-                      return a.id < b.id;
-                  });
-        cout << "\nProcesso\tTurnaround\tWaiting\t\tDealines Perdidos" << endl;
-        for (const auto &processStats: processesStats) {
-            cout << processStats.id 
-                    <<"\t\t"
-                    << processStats.turnarroundTime
-                    << "\t\t"
-                    << processStats.waitingTime
-                    << "\t\t"
-                    << processStats.missedDeadlines << endl;
-        }
-        cout << endl;
-        float averageWaitingTime = 0;
-        //sum all waiting times and divide by number of processes
-        for (const auto &processStats: processesStats) {
-            averageWaitingTime += processStats.waitingTime;
-        }
-        averageWaitingTime /= processesStats.size();
-        cout << "Tempo médio de espera: " << averageWaitingTime << " segundos." << endl;
-        cout << "Trocas de contexto: " << contextSwitches << " vezes." << endl;
-    }
+    void printTimelineHeader();
+    void printTimeline();
+    void printProcessesStats();
+    virtual void scheduleNextProcess() = 0;
+    void verifyProcessesToFinalize();
+    void finalizeProcesses();
     
     int time = 0;
     int contextSwitches = 0;
@@ -82,9 +41,10 @@ protected:
     Process *currentProcess = nullptr;
     ProcessContext workingContext = ProcessContext();
     vector<Process::ProcessStats> processesStats;
+    vector<Process *> readyProcesses = vector<Process *>();
 
 public:
-    virtual void runScheduler() = 0;
+    void runScheduler();
 };
 
 #endif //SCHEDULER_H

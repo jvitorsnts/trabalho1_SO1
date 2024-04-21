@@ -12,20 +12,11 @@ private:
     int currentTime;
 public:
     EarliestDeadlineFirst(vector<Process *> processes);
-    void runScheduler() override;
    
 
 private:
-    vector<Process *> readyProcesses = vector<Process *>();
-
     static bool compareByDeadline(const Process& p1, const Process& p2);
-    void printTimelineHeader() override;
-    void printTimeline() override;
-    void printProcessesStats() override;
-    void verifyProcessesToCreate() override;
-    void scheduleNextProcess();
-    void verifyProcessesToFinalize();
-    void finalizeProcesses();
+    void scheduleNextProcess() override;
 };
 
 
