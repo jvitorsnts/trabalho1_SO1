@@ -55,7 +55,7 @@ protected:
                   [](const Process::ProcessStats &a, const Process::ProcessStats &b) -> bool {
                       return a.id < b.id;
                   });
-        cout << "Processo\tTurnaround\tWaiting\t\tDealines Perdidos" << endl;
+        cout << "\nProcesso\tTurnaround\tWaiting\t\tDealines Perdidos" << endl;
         for (const auto &processStats: processesStats) {
             cout << processStats.id 
                     <<"\t\t"

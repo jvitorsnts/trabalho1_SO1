@@ -82,6 +82,7 @@ void RM::verifyProcessesToFinalize() {
 
 void RM::finalizeProcesses() {
     int iter = 0;
+    vector<Process *> auxReadyProcesses = vector<Process *>();
     for (auto readyProcess : readyProcesses) {
         if (readyProcess->isFinished()) {
             if (currentProcess != nullptr) {
@@ -101,12 +102,16 @@ void RM::finalizeProcesses() {
                 readyProcess->attRemainingTime();
                 readyProcess->attStartTime();
             }
-            cout << "Processos finalizados: " << processesStats.size() << " " << "de " << processes.size() << endl;
-            readyProcesses.erase(readyProcesses.cbegin()+iter);
+            // cout << "Processos finalizados: " << processesStats.size() << " " << "de " << processes.size() << endl;
+            // readyProcesses.erase(readyProcesses.cbegin()+iter);
             // cout << processesStats.size() << endl;
+        } else {
+            auxReadyProcesses.push_back(readyProcess);
         }
         iter++;
     }
+    readyProcesses.clear();
+    readyProcesses = move(auxReadyProcesses);
 }
 
 void RM::printTimelineHeader() {

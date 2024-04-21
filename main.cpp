@@ -37,9 +37,10 @@ int main() {
 
     Scheduler *scheduler;
     while (true) {
-        cout << "Digite sua escolha: " << endl;
+        cout << "Digite sua escolha: ";
         char choice;
         cin >> choice;
+        cout << "\n";
 
         if (choice == '1') {
             scheduler = new RM(processes);
