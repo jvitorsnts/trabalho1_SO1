@@ -13,6 +13,7 @@ void RM::runScheduler() {
     verifyProcessesToCreate();
         
     while (processes.size() != processesStats.size()) {
+        // cout << processes.size() << processesStats.size() << endl;
         if (readyProcesses.empty()) {
             printTimeline();
             time++;
@@ -83,22 +84,26 @@ void RM::finalizeProcesses() {
     int iter = 0;
     for (auto readyProcess : readyProcesses) {
         if (readyProcess->isFinished()) {
+            if (currentProcess != nullptr) {
+                if (readyProcess->getId() == currentProcess->getId()) {
+                    currentProcess = nullptr;
+                }
+            }
+
             readyProcess->subInstances();
             readyProcess->attStats(time);
-
+            // cout << readyProcess->getId() << "\t" << readyProcess->getInstances() << endl;
             if (readyProcess->getInstances() == 0) {
+                // cout << readyProcess->getId() << endl;
                 processesStats.push_back(readyProcess->getStats());
-            }
-            else {
+                // cout << processesStats.size() << " " << processes.size() << endl;
+            } else {
                 readyProcess->attRemainingTime();
                 readyProcess->attStartTime();
             }
-            
-            if (readyProcess->getId() == currentProcess->getId()) {
-                currentProcess = nullptr;
-            }
-
+            cout << processesStats.size() << " " << processes.size() << endl;
             readyProcesses.erase(readyProcesses.cbegin()+iter);
+            // cout << processesStats.size() << endl;
         }
         iter++;
     }

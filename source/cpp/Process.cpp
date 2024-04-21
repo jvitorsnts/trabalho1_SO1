@@ -69,8 +69,9 @@ void Process::subInstances() {
 }
 
 void Process::attStats(int time) {
-    stats.turnarroundTime += time - startTime;
-    stats.waitingTime += stats.turnarroundTime + remainingTime-duration;
+    int auxTurnarroundTime = time - startTime;
+    stats.turnarroundTime += auxTurnarroundTime;
+    stats.waitingTime += auxTurnarroundTime + remainingTime-duration;
     stats.missedDeadlines += remainingTime;
 }
 
