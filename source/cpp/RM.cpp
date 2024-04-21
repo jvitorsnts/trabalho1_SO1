@@ -101,7 +101,7 @@ void RM::finalizeProcesses() {
                 readyProcess->attRemainingTime();
                 readyProcess->attStartTime();
             }
-            cout << processesStats.size() << " " << processes.size() << endl;
+            cout << "Processos finalizados: " << processesStats.size() << " " << "de " << processes.size() << endl;
             readyProcesses.erase(readyProcesses.cbegin()+iter);
             // cout << processesStats.size() << endl;
         }
