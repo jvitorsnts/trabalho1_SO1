@@ -76,7 +76,7 @@ void Process::attStats(int time) {
     int auxTurnarroundTime = time - startTime;
     stats.turnarroundTime += auxTurnarroundTime;
     stats.waitingTime += auxTurnarroundTime + remainingTime-duration;
-    stats.missedDeadlines += remainingTime;
+    if(remainingTime > 0) stats.missedDeadlines++;
 }
 
 Process::ProcessStats Process::getStats() {
