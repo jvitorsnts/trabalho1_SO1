@@ -4,25 +4,36 @@
 
 #include "../headers/Process.h"
 #include <iostream>
+
 using namespace std;
 
-Process::Process(int id, int startTime, int duration, int period, int deadline, int priority) {
+Process::Process(int id, int startTime, int duration, int period, int deadline, int priority, int instances) {
     this->id = id;
     this->startTime = startTime;
     this->duration = duration;
     this->period = period;
     this->deadline = deadline;
     this->priority = priority;
+    this->remainingTime = duration;
+    this->instances = instances;
     this->state = CREATED;
-    remainingTime = duration;
+    stats.id = id;
+    stats.turnarroundTime = 0;
+    stats.missedDeadlines = 0;
+    stats.waitingTime = 0;
 }
 
 int Process::getId() const {
     return id;
 }
 
-int Process::getStartTime() const {
+int Process::getStartTime() {
     return startTime;
+}
+
+void Process::attStartTime() {
+    int newStartTime = startTime + period;
+    startTime = newStartTime;
 }
 
 int Process::getDuration() const {
@@ -41,6 +52,32 @@ int Process::getPriority() const {
     return priority;
 }
 
+int Process::getRemainingTime() {
+    return remainingTime;
+}
+
+void Process::attRemainingTime() {
+    remainingTime = this->duration;
+}
+
+int Process::getInstances() {
+    return instances;
+}
+
+void Process::subInstances() {
+    instances--;
+}
+
+void Process::attStats(int time) {
+    stats.turnarroundTime += time - startTime;
+    stats.waitingTime += stats.turnarroundTime + remainingTime-duration;
+    stats.missedDeadlines += remainingTime;
+}
+
+Process::ProcessStats Process::getStats() {
+    return stats;
+}
+
 Process::PROCESS_STATE Process::getState() const {
     return state;
 }
@@ -50,12 +87,8 @@ void Process::create() {
 }
 
 void Process::run() {
-    if (remainingTime > 0) {
-        state = RUNNING;
-        remainingTime--;
-    } else {
-        state = FINISHED;
-    }
+    state = RUNNING;
+    remainingTime--;
 }
 
 void Process::preempt() {
@@ -71,7 +104,5 @@ bool Process::isRunning() const {
 }
 
 bool Process::isFinished() const {
-    return remainingTime == 0;
+    return state == PROCESS_STATE::FINISHED;
 }
-
-

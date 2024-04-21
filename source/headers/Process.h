@@ -15,14 +15,28 @@ public:
         FINISHED
     };
 
-    Process(int id, int startTime, int duration, int period, int deadline, int priority);
+    typedef struct ProcessStats {
+        int id;
+        int turnarroundTime;
+        int waitingTime;
+        int missedDeadlines;
+    } ProcessStats;
+
+    Process(int id, int startTime, int duration, int period, int deadline, int priority, int instances);
 
     int getId() const;
-    int getStartTime() const;
+    int getStartTime();
+    void attStartTime();
     int getDuration() const;
     int getPeriod() const;
     int getDeadline() const;
     int getPriority() const;
+    int getRemainingTime();
+    void attRemainingTime();
+    int getInstances();
+    void subInstances();
+    void attStats(int time);
+    ProcessStats getStats();
     PROCESS_STATE getState() const;
 
     void create();
@@ -41,8 +55,10 @@ private:
     int period;
     int deadline;
     int priority;
-    PROCESS_STATE state;
     int remainingTime; // uma instancia de Process pode ser preemptada, entao precisamos saber quanto tempo falta para terminar
+    int instances;
+    PROCESS_STATE state;
+    ProcessStats stats;
 };
 
 

@@ -13,12 +13,13 @@ using namespace std;
 class ProcessParams
 {
 public:
-	ProcessParams(int c, int d, int p, int dl, int pr) {
+	ProcessParams(int c, int d, int p, int dl, int pr, int i) {
 		creation_time = c;
 		duration = d;
 		period = p;
 		deadline = dl;
 		priority = pr;
+		instances = i;
 	}
 
 	friend ostream &operator<<(ostream& os, const ProcessParams& p) {
@@ -27,7 +28,8 @@ public:
 				" duration = " << p.duration <<
 					" period = " << p.period <<
 						" deadline = " << p.deadline <<
-							" priority = " << p.priority <<	endl;
+							" priority = " << p.priority <<
+								"instances = " << p.instances << endl;
 		return os;
 	}
 
@@ -51,6 +53,10 @@ public:
 		return priority;
 	}
 
+	int getInstances() const {
+		return instances;
+	}
+
 	
 private:	
 	int creation_time;
@@ -58,6 +64,7 @@ private:
 	int period; //seconds
 	int deadline; //seconds
 	int priority;
+	int instances;
 };
 
 class File
@@ -78,14 +85,15 @@ public:
 		// c: periodo
 		// d: deadline
 		// e: prioridade estatica (3 > 2 para RM)
-		int a, b, c, d, e;
+		// f: instancias
+		int a, b, c, d, e, f;
 		
 		if (!myfile.is_open()) {
 			cout << "Arquivo não está aberto!" << endl;
 		}
 		
-		while (myfile >> a >> b >> c >> d >> e) {
-			auto *p = new ProcessParams(a, b, c, d, e);
+		while (myfile >> a >> b >> c >> d >> e >> f) {
+			auto *p = new ProcessParams(a, b, c, d, e, f);
 			processes.push_back(p);
 		}
 

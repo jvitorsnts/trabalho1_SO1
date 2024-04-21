@@ -1,40 +1,61 @@
 //
 // Created by gabri on 13/04/2024.
 //
+
+#include <iostream>
+#include <vector>
+#include "source/headers/RM.h"
 #include "source/headers/Process.h"
 #include "read_file.h"
 
-#include <iostream>
-
+using namespace std;
 
 int main() {
-    std::cout << "TODO: adicionar algoritmos de escalonamento" << std::endl;
+    cout << "Bem vindo ao simulador de escalonamento de processos." << endl;
+    cout << "Escolha o algoritmo a ser utizado da seguinte lista:" << endl;
+    cout << "1 -> RM\n"
+            "2 -> EDF\n" << endl;
 
     File f;
     f.read_file();
 
-    std::vector<Process *> processes;
+    vector<Process *> processes;
 
     int i = 1;
     for (auto &p: f.get_processes()) {
-          auto *newProcess = new Process(i, p->getCreationTime(), p->getDuration(), p->getPeriod(), p->getDeadline(), p->getPriority());
-            processes.push_back(newProcess);
-            i++;
+        auto *newProcess = new Process(i,
+                                        p->getCreationTime(),
+                                        p->getDuration(),
+                                        p->getPeriod(),
+                                        p->getDeadline(),
+                                        p->getPriority(),
+                                        p->getInstances());
+        processes.push_back(newProcess);
+        i++;
     }
 
-    // TODO: adicionar algoritmos de escalonamento
-    // por enquanto apenas imprime os processos
+    Scheduler *scheduler;
+    while (true) {
+        cout << "Digite sua escolha: " << endl;
+        char choice;
+        cin >> choice;
 
-    for(auto &p: processes) {
-        std::cout << "Processo " << p->getId() << std::endl;
-        std::cout << "Tempo de criação: " << p->getStartTime() << std::endl;
-        std::cout << "Duração: " << p->getDuration() << std::endl;
-        std::cout << "Período: " << p->getPeriod() << std::endl;
-        std::cout << "Deadline: " << p->getDeadline() << std::endl;
-        std::cout << "Prioridade: " << p->getPriority() << std::endl;
-        std::cout << std::endl;
+        if (choice == '1') {
+            scheduler = new RM(processes);
+            scheduler->runScheduler();
+            break;
+        }
+        else if (choice == '2') {
+            
+            break;
+        }
+        else {
+            cout << "Opção inválida" << endl;
+            continue;
+        }
     }
 
+    delete scheduler;
 }
 
 
