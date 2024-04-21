@@ -1,37 +1,38 @@
-CXX := g++
-CXXFLAGS := -std=c++11 -Wall -Wextra
+# Compiler
+CXX = g++
 
-SRC_DIR := source/cpp
-OBJ_DIR := obj
-BIN_DIR := bin
+# Compiler flags
+CXXFLAGS = -Wall -Wextra -std=c++11
 
-SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SOURCES))
+# Target executable
+TARGET = meu_programa
 
-TARGET := $(BIN_DIR)/scheduler
+# Source directory
+SRCDIR = source/cpp
 
+# Header directory
+INCDIR = source/headers
+
+# Source files
+SRCS = $(wildcard *.cpp) $(wildcard $(SRCDIR)/*.cpp)
+
+# Object files
+OBJS = $(SRCS:.cpp=.o)
+
+# Header files
+HDRS = $(wildcard *.h) $(wildcard $(INCDIR)/*.h)
+
+# Rule to compile all source files
 all: $(TARGET)
 
-$(TARGET): $(OBJ_DIR) $(BIN_DIR) $(OBJECTS) main.cpp
-	$(CXX) $(CXXFLAGS) main.cpp $(OBJECTS) -o $(TARGET)
-	cp -f entrada.txt $(BIN_DIR)/entrada.txt
+# Rule to link object files into target executable
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Rule to compile each source file into object files
+%.o: %.cpp $(HDRS)
+	$(CXX) $(CXXFLAGS) -I$(INCDIR) -c -o $@ $<
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
-
+# Rule to clean object files and target executable
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
-
-run: clean all input
-	./$(TARGET)
-
-input:
-	cp -f entrada.txt $(BIN_DIR)/entrada.txt
-
-.PHONY: all clean
+	rm -f $(OBJS) $(TARGET)
