@@ -48,6 +48,10 @@ int Process::getDeadline() const {
     return deadline;
 }
 
+int Process::getRelativeDeadline() {
+    return startTime+deadline;
+}
+
 int Process::getPriority() const {
     return priority;
 }

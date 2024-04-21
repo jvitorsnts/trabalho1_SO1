@@ -6,51 +6,118 @@
 
 using namespace std;
 
-    EarliestDeadlineFirst::EarliestDeadlineFirst() : currentTime(0) {}
+EarliestDeadlineFirst::EarliestDeadlineFirst(vector<Process *> processes) {
+    this->processes = move(processes);
+}
 
-    void EarliestDeadlineFirst::addProcess(const Process& process) {
-        processes.push_back(process);
+void EarliestDeadlineFirst::runScheduler() {
+    printTimelineHeader();
+    verifyProcessesToCreate();
+        
+    while (processes.size() != processesStats.size()) {
+        // cout << processes.size() << processesStats.size() << endl;
+        if (readyProcesses.empty()) {
+            printTimeline();
+            time++;
+            verifyProcessesToCreate();
+        }
+        else {
+            scheduleNextProcess();
+            currentProcess->run();
+            printTimeline();
+            time++;
+            verifyProcessesToFinalize();
+            finalizeProcesses();
+            verifyProcessesToCreate();
+        }
     }
+    printProcessesStats();
+}
 
-    bool EarliestDeadlineFirst::compareByDeadline(const Process& p1, const Process& p2) {
-        return p1.getDeadline() < p2.getDeadline();
-    }
-
-void EarliestDeadlineFirst::scheduleOneTimeUnit() {
-    std::cout << std::setw(2) << std::right << currentTime << "-" << currentTime + 1;
-
-    auto nextProcessIt = processes.end();
-    for (auto it = processes.begin(); it != processes.end(); ++it) {
-        if (!it->isFinished() && it->getStartTime() <= currentTime) {
-            if (nextProcessIt == processes.end() || it->getDeadline() < nextProcessIt->getDeadline()) {
-                nextProcessIt = it;
+void EarliestDeadlineFirst::verifyProcessesToCreate() {
+    for (const auto &process: processes) {
+        if (process->getStartTime() == time) {
+            process->create();
+            if (readyProcesses.empty()) {
+                readyProcesses.push_back(process);
+            } 
+            else {
+                int iter = 0;
+                for (auto readyProcess : readyProcesses) {
+                    if (process->getPriority() > readyProcess->getPriority()) {
+                        readyProcesses.insert(readyProcesses.begin()+iter, process);
+                        break;
+                    }
+                    iter++;
+                }
             }
         }
     }
-
-    nextProcessIt->run();
-
-    for (auto& process : processes) {
-        if (&process == &(*nextProcessIt)) {
-            std::cout << " ##";
-        } else if (process.getStartTime() <= currentTime && !process.isFinished()) {
-            std::cout << " --";
-        } else {
-            std::cout << "   ";
-        }
-    }
-    std::cout << std::endl;
-
-    currentTime++;
 }
 
-    bool EarliestDeadlineFirst::hasActiveProcesses() {
-        // Verifica se algum processo ainda está em execução
-        return std::any_of(processes.begin(), processes.end(), [](const Process& p) {
-            return !p.isFinished();
-        });
+void EarliestDeadlineFirst::verifyProcessesToFinalize() {
+    for (auto readyProcess : readyProcesses) {
+        bool finalize = (readyProcess->getDeadline() == time-readyProcess->getStartTime())
+                        or
+                        (readyProcess->getRemainingTime() == 0);
+        if (finalize) {
+            readyProcess->finish(); 
+        }
+    }
+}
+
+void EarliestDeadlineFirst::finalizeProcesses() {
+    int iter = 0;
+    for (auto readyProcess : readyProcesses) {
+        if (readyProcess->isFinished()) {
+            if (currentProcess != nullptr) {
+                if (readyProcess->getId() == currentProcess->getId()) {
+                    currentProcess = nullptr;
+                }
+            }
+
+            readyProcess->subInstances();
+            readyProcess->attStats(time);
+            // cout << readyProcess->getId() << "\t" << readyProcess->getInstances() << endl;
+            if (readyProcess->getInstances() == 0) {
+                // cout << readyProcess->getId() << endl;
+                processesStats.push_back(readyProcess->getStats());
+                // cout << processesStats.size() << " " << processes.size() << endl;
+            } else {
+                readyProcess->attRemainingTime();
+                readyProcess->attStartTime();
+            }
+            //cout << processesStats.size() << " " << processes.size() << endl;
+            readyProcesses.erase(readyProcesses.cbegin()+iter);
+            // cout << processesStats.size() << endl;
+        }
+        iter++;
+    }
+}
+
+void EarliestDeadlineFirst::printTimelineHeader() {
+    Scheduler::printTimelineHeader();
+}
+
+void EarliestDeadlineFirst::printTimeline() {
+    Scheduler::printTimeline();
+}
+
+void EarliestDeadlineFirst::printProcessesStats() {
+    Scheduler::printProcessesStats();
+}
+
+void EarliestDeadlineFirst::scheduleNextProcess() {
+    Process *nextProcessIt = nullptr;
+    for (auto readyProcess : readyProcesses) {
+        if (nextProcessIt == nullptr || readyProcess->getRelativeDeadline() < nextProcessIt->getRelativeDeadline()) {
+            nextProcessIt = readyProcess;
+        }
     }
 
-    int EarliestDeadlineFirst::getCurrentTime() {
-        return currentTime;
+    if(currentProcess != nullptr && currentProcess != nextProcessIt){
+        currentProcess->preempt();
+        contextSwitches++;
     }
+    currentProcess = nextProcessIt;
+}

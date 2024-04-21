@@ -38,6 +38,7 @@ public:
     void attStats(int time);
     ProcessStats getStats();
     PROCESS_STATE getState() const;
+    int getRelativeDeadline();
 
     void create();
     void run();

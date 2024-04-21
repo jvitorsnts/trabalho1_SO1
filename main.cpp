@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "source/headers/RM.h"
+#include "source/headers/EarliestDeadlineFirst.h"
 #include "source/headers/Process.h"
 #include "read_file.h"
 
@@ -46,7 +47,8 @@ int main() {
             break;
         }
         else if (choice == '2') {
-            
+            scheduler = new EarliestDeadlineFirst(processes);
+            scheduler->runScheduler();
             break;
         }
         else {
