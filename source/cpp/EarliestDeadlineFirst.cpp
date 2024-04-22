@@ -22,6 +22,7 @@ void EarliestDeadlineFirst::scheduleNextProcess() {
         currentProcess->preempt();
         contextSwitches++;
     }
+    if(currentProcess == nullptr) contextSwitches++;
     currentProcess = nextProcessIt;
     CPU.setContext(currentProcess);
 }
