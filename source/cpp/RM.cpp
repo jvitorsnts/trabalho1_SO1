@@ -15,6 +15,7 @@ RM::RM(vector<Process *> processes) {
 void RM::scheduleNextProcess() {
     if (currentProcess == nullptr) {
         currentProcess = readyProcesses.front();
+        CPU.setContext(currentProcess);
         contextSwitches++;
     }
     else {
@@ -22,6 +23,7 @@ void RM::scheduleNextProcess() {
             if (readyProcess->getPriority() > currentProcess->getPriority()) {
                 currentProcess->preempt();
                 currentProcess = readyProcess;
+                CPU.setContext(currentProcess);
                 contextSwitches++;
             }
         }

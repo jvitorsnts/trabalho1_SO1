@@ -17,6 +17,14 @@ public:
         int missedDeadlines;
     } ProcessStats;
 
+    typedef struct ProcessContext {
+        int id;
+        int duration;
+        int period;
+        int deadline;
+        int priority;
+    } ProcessContext;
+
     // Construtor
     Process(int id, int startTime, int duration, int period, int deadline, int priority, int instances);
 

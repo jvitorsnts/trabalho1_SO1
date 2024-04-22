@@ -23,4 +23,5 @@ void EarliestDeadlineFirst::scheduleNextProcess() {
         contextSwitches++;
     }
     currentProcess = nextProcessIt;
+    CPU.setContext(currentProcess);
 }

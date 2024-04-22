@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include "Process.h"
-#include "ProcessContext.h"
+#include "INE5412.h"
 
 
 using namespace std;
@@ -46,9 +46,9 @@ protected:
     
     int time = 0;
     int contextSwitches = 0;
+    INE5412 CPU = INE5412();
     vector<Process *> processes;
     Process *currentProcess = nullptr;
-    ProcessContext workingContext = ProcessContext();
     vector<Process::ProcessStats> processesStats;
     vector<Process *> readyProcesses = vector<Process *>();
 

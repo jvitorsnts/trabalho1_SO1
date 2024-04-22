@@ -71,6 +71,7 @@ void Scheduler::finalizeProcesses() {
             // Processo finalizado pode ser o atual
             if (currentProcess != nullptr) {
                 if (readyProcess->getId() == currentProcess->getId()) {
+                    CPU.clearContext();
                     currentProcess = nullptr;
                 }
             }

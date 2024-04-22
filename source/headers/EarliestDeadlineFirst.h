@@ -3,7 +3,6 @@
 
 #include <array>
 #include <vector>
-#include "Register.h"
 #include "Process.h"
 #include "Scheduler.h"
 
